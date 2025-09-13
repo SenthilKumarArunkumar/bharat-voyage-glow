@@ -50,6 +50,7 @@
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
+    --input-foreground: 240 10% 98%;
     --ring: var(--saffron);
 
     /* Advanced design tokens */

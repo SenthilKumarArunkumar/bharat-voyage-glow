@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,15 +9,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Plane, ArrowRightLeft, Calendar as CalendarIcon, Users, Clock, MapPin } from "lucide-react";
+import { Plane, ArrowRightLeft, Calendar as CalendarIcon, Users, Clock, MapPin, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import Navigation from "@/components/Navigation";
+import airIndiaLogo from "@/assets/airlines/air-india-logo.jpg";
+import indigoLogo from "@/assets/airlines/indigo-logo.jpg";
+import vistaraLogo from "@/assets/airlines/vistara-logo.jpg";
 
 const flightData = [
   {
     id: 1,
     airline: "Air India",
-    logo: "/placeholder.svg",
+    logo: airIndiaLogo,
     from: "DEL",
     to: "BOM",
     departure: "06:00",
@@ -29,7 +33,7 @@ const flightData = [
   {
     id: 2,
     airline: "IndiGo",
-    logo: "/placeholder.svg",
+    logo: indigoLogo,
     from: "DEL",
     to: "BOM",
     departure: "10:15",
@@ -42,7 +46,7 @@ const flightData = [
   {
     id: 3,
     airline: "Vistara",
-    logo: "/placeholder.svg",
+    logo: vistaraLogo,
     from: "DEL",
     to: "BOM",
     departure: "14:30",
@@ -51,6 +55,19 @@ const flightData = [
     price: 9800,
     type: "Non-stop",
     class: "Premium Economy"
+  },
+  {
+    id: 4,
+    airline: "SpiceJet",
+    logo: airIndiaLogo,
+    from: "DEL",
+    to: "BOM",
+    departure: "18:45",
+    arrival: "21:25",
+    duration: "2h 40m",
+    price: 6800,
+    type: "Non-stop",
+    class: "Economy"
   }
 ];
 
@@ -58,12 +75,32 @@ const Flights = () => {
   const [departDate, setDepartDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
   const [tripType, setTripType] = useState("one-way");
+  const [sortBy, setSortBy] = useState("price-low");
+
+  // Sort flights
+  const sortedFlights = [...flightData].sort((a, b) => {
+    if (sortBy === "price-low") return a.price - b.price;
+    if (sortBy === "price-high") return b.price - a.price;
+    if (sortBy === "duration") return a.duration.localeCompare(b.duration);
+    if (sortBy === "departure") return a.departure.localeCompare(b.departure);
+    return 0;
+  });
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
       <main className="container mx-auto px-4 py-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link to="/">
+            <Button variant="outline" className="flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </Button>
+          </Link>
+        </div>
+
         {/* Hero Section */}
         <section className="text-center mb-8">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-hero bg-clip-text text-transparent">
@@ -187,9 +224,9 @@ const Flights = () => {
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Available Flights</h2>
-            <Select>
+            <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Sort by price" />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="price-low">Price: Low to High</SelectItem>
@@ -200,20 +237,22 @@ const Flights = () => {
             </Select>
           </div>
 
-          {flightData.map((flight) => (
+          {sortedFlights.map((flight) => (
             <Card key={flight.id} className="glass-card hover-lift">
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-center">
                   {/* Airline Info */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
-                      <Plane className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="font-semibold">{flight.airline}</div>
-                      <div className="text-sm text-muted-foreground">{flight.class}</div>
-                    </div>
-                  </div>
+                   <div className="flex items-center gap-3">
+                     <img 
+                       src={flight.logo} 
+                       alt={flight.airline}
+                       className="w-12 h-12 rounded-lg object-contain bg-white p-1"
+                     />
+                     <div>
+                       <div className="font-semibold">{flight.airline}</div>
+                       <div className="text-sm text-muted-foreground">{flight.class}</div>
+                     </div>
+                   </div>
 
                   {/* Flight Times */}
                   <div className="text-center">

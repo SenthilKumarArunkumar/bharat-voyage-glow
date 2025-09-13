@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,15 +7,19 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Car, MapPin, Users, Clock, Star, Fuel } from "lucide-react";
+import { Car, MapPin, Users, Clock, Star, Fuel, ArrowLeft } from "lucide-react";
 import Navigation from "@/components/Navigation";
+import hatchbackSwift from "@/assets/cars/hatchback-swift.jpg";
+import sedanHonda from "@/assets/cars/sedan-honda.jpg";
+import suvToyota from "@/assets/cars/suv-toyota.jpg";
+import luxuryMercedes from "@/assets/cars/luxury-mercedes.jpg";
 
 const cabData = [
   {
     id: 1,
     type: "Hatchback",
     model: "Swift Dzire",
-    image: "/placeholder.svg",
+    image: hatchbackSwift,
     capacity: 4,
     features: ["AC", "Music System", "GPS"],
     pricePerKm: 12,
@@ -25,7 +30,7 @@ const cabData = [
     id: 2,
     type: "Sedan",
     model: "Honda Amaze",
-    image: "/placeholder.svg",
+    image: sedanHonda,
     capacity: 4,
     features: ["AC", "Bluetooth", "GPS", "Charging Port"],
     pricePerKm: 15,
@@ -36,7 +41,7 @@ const cabData = [
     id: 3,
     type: "SUV",
     model: "Toyota Innova",
-    image: "/placeholder.svg",
+    image: suvToyota,
     capacity: 7,
     features: ["AC", "Spacious", "GPS", "Entertainment"],
     pricePerKm: 22,
@@ -47,7 +52,7 @@ const cabData = [
     id: 4,
     type: "Luxury",
     model: "Mercedes E-Class",
-    image: "/placeholder.svg",
+    image: luxuryMercedes,
     capacity: 4,
     features: ["Luxury Interior", "Chauffeur", "WiFi", "Refreshments"],
     pricePerKm: 45,
@@ -71,6 +76,16 @@ const Cabs = () => {
       <Navigation />
       
       <main className="container mx-auto px-4 py-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link to="/">
+            <Button variant="outline" className="flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </Button>
+          </Link>
+        </div>
+
         {/* Hero Section */}
         <section className="text-center mb-8">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-hero bg-clip-text text-transparent">
@@ -259,7 +274,11 @@ const Cabs = () => {
 
                 <CardContent>
                   <div className="flex items-center justify-center h-32 bg-muted/20 rounded-lg mb-4">
-                    <Car className="w-16 h-16 text-muted-foreground" />
+                    <img 
+                      src={cab.image} 
+                      alt={cab.model}
+                      className="w-full h-full object-contain rounded-lg"
+                    />
                   </div>
 
                   <div className="space-y-3 mb-6">

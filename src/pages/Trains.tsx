@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Train, MapPin, Calendar as CalendarIcon, Clock, Search, CreditCard } from "lucide-react";
+import { Train, MapPin, Calendar as CalendarIcon, Clock, Search, CreditCard, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import Navigation from "@/components/Navigation";
 
@@ -70,6 +71,16 @@ const Trains = () => {
       <Navigation />
       
       <main className="container mx-auto px-4 py-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link to="/">
+            <Button variant="outline" className="flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </Button>
+          </Link>
+        </div>
+
         {/* Hero Section */}
         <section className="text-center mb-8">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-hero bg-clip-text text-transparent">

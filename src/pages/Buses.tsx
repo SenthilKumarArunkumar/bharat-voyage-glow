@@ -6,9 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Bus, MapPin, Calendar as CalendarIcon, Clock, Star, Wifi, Snowflake } from "lucide-react";
+import { Bus, MapPin, Calendar as CalendarIcon, Clock, Star, Wifi, Snowflake, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 
 const busData = [
@@ -58,12 +59,43 @@ const busData = [
 
 const Buses = () => {
   const [travelDate, setTravelDate] = useState<Date>();
+  const [sortBy, setSortBy] = useState("departure");
+  const [filterBy, setFilterBy] = useState("all");
+  const [fromCity, setFromCity] = useState("Delhi");
+  const [toCity, setToCity] = useState("Manali");
+
+  // Filter and sort bus data
+  const filteredAndSortedBuses = busData
+    .filter(bus => {
+      if (filterBy === "all") return true;
+      if (filterBy === "ac") return bus.amenities.includes("AC");
+      if (filterBy === "sleeper") return bus.type.includes("Sleeper");
+      if (filterBy === "rating") return bus.rating >= 4.0;
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortBy === "departure") return a.departure.localeCompare(b.departure);
+      if (sortBy === "price-low") return a.price - b.price;
+      if (sortBy === "price-high") return b.price - a.price;
+      if (sortBy === "rating") return b.rating - a.rating;
+      return 0;
+    });
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
       <main className="container mx-auto px-4 py-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link to="/">
+            <Button variant="outline" className="flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </Button>
+          </Link>
+        </div>
+
         {/* Hero Section */}
         <section className="text-center mb-8">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-hero bg-clip-text text-transparent">
@@ -86,6 +118,8 @@ const Buses = () => {
                     id="from"
                     placeholder="Delhi"
                     className="pl-10"
+                    value={fromCity}
+                    onChange={(e) => setFromCity(e.target.value)}
                   />
                 </div>
               </div>
@@ -98,6 +132,8 @@ const Buses = () => {
                     id="to"
                     placeholder="Manali"
                     className="pl-10"
+                    value={toCity}
+                    onChange={(e) => setToCity(e.target.value)}
                   />
                 </div>
               </div>
@@ -149,19 +185,43 @@ const Buses = () => {
 
         {/* Filters */}
         <div className="flex gap-4 mb-6 overflow-x-auto">
-          <Badge variant="outline" className="whitespace-nowrap">AC Buses</Badge>
-          <Badge variant="outline" className="whitespace-nowrap">Sleeper</Badge>
-          <Badge variant="outline" className="whitespace-nowrap">Departure: 6 PM - 11 PM</Badge>
-          <Badge variant="outline" className="whitespace-nowrap">Rating 4.0+</Badge>
+          <Badge 
+            variant={filterBy === "all" ? "default" : "outline"} 
+            className="whitespace-nowrap cursor-pointer"
+            onClick={() => setFilterBy("all")}
+          >
+            All Buses
+          </Badge>
+          <Badge 
+            variant={filterBy === "ac" ? "default" : "outline"} 
+            className="whitespace-nowrap cursor-pointer"
+            onClick={() => setFilterBy("ac")}
+          >
+            AC Buses
+          </Badge>
+          <Badge 
+            variant={filterBy === "sleeper" ? "default" : "outline"} 
+            className="whitespace-nowrap cursor-pointer"
+            onClick={() => setFilterBy("sleeper")}
+          >
+            Sleeper
+          </Badge>
+          <Badge 
+            variant={filterBy === "rating" ? "default" : "outline"} 
+            className="whitespace-nowrap cursor-pointer"
+            onClick={() => setFilterBy("rating")}
+          >
+            Rating 4.0+
+          </Badge>
         </div>
 
         {/* Bus Results */}
         <section>
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Available Buses</h2>
-            <Select>
+            <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Sort by departure" />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="departure">Departure Time</SelectItem>
@@ -173,7 +233,7 @@ const Buses = () => {
           </div>
 
           <div className="space-y-4">
-            {busData.map((bus) => (
+            {filteredAndSortedBuses.map((bus) => (
               <Card key={bus.id} className="glass-card hover-lift">
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 items-center">
