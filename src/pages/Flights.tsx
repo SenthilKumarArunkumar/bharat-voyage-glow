@@ -12,6 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Plane, ArrowRightLeft, Calendar as CalendarIcon, Users, Clock, MapPin, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import Navigation from "@/components/Navigation";
+import FlightDetailModal from "@/components/FlightDetailModal";
 import airIndiaLogo from "@/assets/airlines/air-india-logo.jpg";
 import indigoLogo from "@/assets/airlines/indigo-logo.jpg";
 import vistaraLogo from "@/assets/airlines/vistara-logo.jpg";
@@ -76,6 +77,8 @@ const Flights = () => {
   const [returnDate, setReturnDate] = useState<Date>();
   const [tripType, setTripType] = useState("one-way");
   const [sortBy, setSortBy] = useState("price-low");
+  const [selectedFlight, setSelectedFlight] = useState<typeof flightData[0] | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   // Sort flights
   const sortedFlights = [...flightData].sort((a, b) => {
@@ -293,6 +296,12 @@ const Flights = () => {
           ))}
         </div>
       </main>
+      
+      <FlightDetailModal
+        flight={selectedFlight}
+        open={isDetailModalOpen}
+        onOpenChange={setIsDetailModalOpen}
+      />
     </div>
   );
 };

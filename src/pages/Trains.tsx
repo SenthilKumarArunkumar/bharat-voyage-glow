@@ -12,6 +12,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Train, MapPin, Calendar as CalendarIcon, Clock, Search, CreditCard, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import Navigation from "@/components/Navigation";
+import SeatSelectionModal from "@/components/SeatSelectionModal";
+import indianRailways from "@/assets/trains/indian-railways.jpg";
+import rajdhaniExpress from "@/assets/trains/rajdhani-express.jpg";
+import shatabdiExpress from "@/assets/trains/shatabdi-express.jpg";
 
 const trainData = [
   {
@@ -65,6 +69,8 @@ const trainData = [
 const Trains = () => {
   const [travelDate, setTravelDate] = useState<Date>();
   const [activeTab, setActiveTab] = useState("booking");
+  const [selectedTrain, setSelectedTrain] = useState<any>(null);
+  const [isSeatModalOpen, setIsSeatModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -243,7 +249,14 @@ const Trains = () => {
                                   <div className="text-lg font-bold text-saffron">
                                     ₹{cls.price}
                                   </div>
-                                  <Button size="sm" className="bg-gradient-hero hover:opacity-90">
+                                  <Button 
+                                    size="sm" 
+                                    className="bg-gradient-hero hover:opacity-90"
+                                    onClick={() => {
+                                      setSelectedTrain({...train, price: cls.price, seatsAvailable: cls.available});
+                                      setIsSeatModalOpen(true);
+                                    }}
+                                  >
                                     Book
                                   </Button>
                                 </div>
@@ -324,6 +337,17 @@ const Trains = () => {
           </TabsContent>
         </Tabs>
       </main>
+      
+      {selectedTrain && (
+        <SeatSelectionModal
+          open={isSeatModalOpen}
+          onOpenChange={setIsSeatModalOpen}
+          vehicleType="train"
+          vehicleName={selectedTrain.name}
+          totalSeats={selectedTrain.seatsAvailable + 30}
+          price={selectedTrain.price}
+        />
+      )}
     </div>
   );
 };

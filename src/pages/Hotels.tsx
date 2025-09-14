@@ -11,9 +11,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Search, Star, Wifi, Car, Coffee, MapPin, Users, Calendar as CalendarIcon, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import Navigation from "@/components/Navigation";
+import HotelDetailModal from "@/components/HotelDetailModal";
 import tajLakePalace from "@/assets/hotels/taj-lake-palace.jpg";
 import heritageHaveli from "@/assets/hotels/heritage-haveli.jpg";
 import keralaBackwaters from "@/assets/kerala-backwaters.jpg";
+import goaBeachResort from "@/assets/hotels/goa-beach-resort.jpg";
+import mountainViewHotel from "@/assets/hotels/mountain-view-hotel.jpg";
 
 const hotelData = [
   {
@@ -53,7 +56,7 @@ const hotelData = [
     id: 4,
     name: "Goa Beach Resort",
     location: "Calangute, Goa",
-    image: keralaBackwaters,
+    image: goaBeachResort,
     rating: 4.4,
     reviews: 520,
     price: 6800,
@@ -64,7 +67,7 @@ const hotelData = [
     id: 5,
     name: "Mountain View Hotel",
     location: "Manali, Himachal Pradesh", 
-    image: tajLakePalace,
+    image: mountainViewHotel,
     rating: 4.3,
     reviews: 380,
     price: 4500,
@@ -78,6 +81,8 @@ const Hotels = () => {
   const [checkOut, setCheckOut] = useState<Date>();
   const [sortBy, setSortBy] = useState("popularity");
   const [filterBy, setFilterBy] = useState("all");
+  const [selectedHotel, setSelectedHotel] = useState<typeof hotelData[0] | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   // Filter and sort hotels
   const filteredAndSortedHotels = hotelData
@@ -313,7 +318,14 @@ const Hotels = () => {
                     <Button className="w-full bg-gradient-hero hover:opacity-90 mb-2">
                       Book Now
                     </Button>
-                    <Button variant="outline" className="w-full">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => {
+                        setSelectedHotel(hotel);
+                        setIsDetailModalOpen(true);
+                      }}
+                    >
                       View Details
                     </Button>
                   </div>
@@ -323,6 +335,12 @@ const Hotels = () => {
           ))}
         </div>
       </main>
+      
+      <HotelDetailModal
+        hotel={selectedHotel}
+        open={isDetailModalOpen}
+        onOpenChange={setIsDetailModalOpen}
+      />
     </div>
   );
 };

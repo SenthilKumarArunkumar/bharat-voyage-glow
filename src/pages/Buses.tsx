@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import SeatSelectionModal from "@/components/SeatSelectionModal";
 
 const busData = [
   {
@@ -63,6 +64,8 @@ const Buses = () => {
   const [filterBy, setFilterBy] = useState("all");
   const [fromCity, setFromCity] = useState("Delhi");
   const [toCity, setToCity] = useState("Manali");
+  const [selectedBus, setSelectedBus] = useState<typeof busData[0] | null>(null);
+  const [isSeatModalOpen, setIsSeatModalOpen] = useState(false);
 
   // Filter and sort bus data
   const filteredAndSortedBuses = busData
@@ -297,7 +300,13 @@ const Buses = () => {
                       <div className="text-2xl font-bold text-saffron mb-2">
                         ₹{bus.price}
                       </div>
-                      <Button className="w-full bg-gradient-hero hover:opacity-90 mb-2">
+                      <Button 
+                        className="w-full bg-gradient-hero hover:opacity-90 mb-2"
+                        onClick={() => {
+                          setSelectedBus(bus);
+                          setIsSeatModalOpen(true);
+                        }}
+                      >
                         Select Seats
                       </Button>
                       <Button variant="outline" className="w-full text-xs">
@@ -336,6 +345,17 @@ const Buses = () => {
           </CardContent>
         </Card>
       </main>
+      
+      {selectedBus && (
+        <SeatSelectionModal
+          open={isSeatModalOpen}
+          onOpenChange={setIsSeatModalOpen}
+          vehicleType="bus"
+          vehicleName={selectedBus.operator}
+          totalSeats={selectedBus.seatsAvailable + 20}
+          price={selectedBus.price}
+        />
+      )}
     </div>
   );
 };
