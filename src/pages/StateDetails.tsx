@@ -23,14 +23,14 @@ const stateDetailsData: Record<string, any> = {
       {
         name: "Munnar Tea Gardens",
         description: "Rolling hills covered with tea plantations",
-        image: "/placeholder.svg",
+        image: "/src/assets/Munnar Tea Gardens.jpg",
         rating: 4.7,
         category: "Nature"
       },
       {
         name: "Fort Kochi",
         description: "Historic port city with colonial architecture",
-        image: "/placeholder.svg",
+        image: "/src/assets/Fort Kochi.jpg",
         rating: 4.6,
         category: "Historical"
       }
@@ -53,14 +53,14 @@ const stateDetailsData: Record<string, any> = {
       {
         name: "Amber Fort, Jaipur",
         description: "Majestic hilltop fort with stunning architecture",
-        image: "/placeholder.svg",
+        image: "/src/assets/Amber Fort  Jaipur.jpg",
         rating: 4.8,
         category: "Historical"
       },
       {
         name: "Lake Palace, Udaipur",
         description: "Floating palace on Lake Pichola",
-        image: "/placeholder.svg",
+        image: "/src/assets/Lake Palace Udaipur.jpg",
         rating: 4.9,
         category: "Heritage"
       }
