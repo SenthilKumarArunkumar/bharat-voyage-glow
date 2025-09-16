@@ -42,7 +42,7 @@ const topAttractionsData = [
     id: "golden-temple",
     title: "Golden Temple, Amritsar",
     description: "Sikh spiritual center with golden architecture",
-    image: "/placeholder.svg",
+    image: "/src/assets/golden-temple.jpg",
     rating: 4.9,
     duration: "2-3 hours",
     category: "Spiritual",
@@ -52,7 +52,7 @@ const topAttractionsData = [
     id: "varanasi-ghats",
     title: "Varanasi Ghats",
     description: "Ganga Aarti ceremony and spiritual vibes",
-    image: "/placeholder.svg",
+    image: "/src/assets/varanasi-ghats.jpg",
     rating: 4.6,
     duration: "Half day",
     category: "Spiritual",
@@ -75,7 +75,7 @@ const stateData = [
     id: "tamil-nadu",
     name: "Tamil Nadu",
     highlights: "Temples, Marina Beach, Ooty hills",
-    image: "/placeholder.svg",
+    image: "/src/assets/tamil-nadu.jpg",
     attractions: 45
   },
   {
@@ -103,14 +103,14 @@ const stateData = [
     id: "goa",
     name: "Goa",
     highlights: "Beaches, nightlife, Portuguese heritage",
-    image: "/placeholder.svg",
+    image: "/src/assets/goa.jpg",
     attractions: 32
   },
   {
     id: "himachal",
     name: "Himachal Pradesh",
     highlights: "Shimla, Manali, Dharamshala",
-    image: "/placeholder.svg",
+    image: "/src/assets/himachal.jpg",
     attractions: 35
   }
 ];
